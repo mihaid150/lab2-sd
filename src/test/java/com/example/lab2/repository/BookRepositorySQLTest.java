@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,6 +39,18 @@ class BookRepositorySQLTest {
 
     @Test
     void findById() {
+        Book expectedBook = new BookBuilder()
+                .setAuthor("author")
+                .setTitle("title")
+                .setPublishedDate(LocalDate.now())
+                .build();
+        assertTrue(bookRepository.create(expectedBook));
+
+        long expectedBookId = bookRepository.findBookIdByUniqueAttributes("title", "author");
+        Optional<Book> optionalActualBook = bookRepository.findById(expectedBookId);
+        assertTrue(optionalActualBook.isPresent());
+        Book actualBook = optionalActualBook.get();
+        assertEquals(expectedBook, actualBook);
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.example.lab2.repository;
 import com.example.lab2.model.Book;
 import com.example.lab2.model.BookBuilder;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -72,6 +73,24 @@ public class BookRepositorySQL implements BookRepository {
         } catch (SQLException e) {
             return false;
         }
+    }
+
+    @Override
+    public long findBookIdByUniqueAttributes(String title, String author) {
+        String sql = "SELECT id FROM book where title = ? AND author = ?";
+        try {
+          PreparedStatement findStatement = connection.prepareStatement(sql);
+          findStatement.setString(1, title);
+          findStatement.setString(2, author);
+
+          ResultSet resultSet = findStatement.executeQuery();
+          if(resultSet.next()) {
+              return resultSet.getLong("id");
+          }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
     }
 
     @Override

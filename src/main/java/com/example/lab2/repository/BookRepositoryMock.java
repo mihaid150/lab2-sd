@@ -33,6 +33,16 @@ public class BookRepositoryMock implements BookRepository{
     }
 
     @Override
+    public long findBookIdByUniqueAttributes(String title, String author) {
+        return books
+                .stream()
+                .filter(book -> book.getAuthor().equals(author) && book.getTitle().equals(title))
+                .findFirst()
+                .map(Book::getId)
+                .orElse(-1L);
+    }
+
+    @Override
     public void removeAll() {
         books.clear();
     }

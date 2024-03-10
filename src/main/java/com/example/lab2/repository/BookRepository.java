@@ -9,5 +9,6 @@ public interface BookRepository {
     List<Book> findAll();
     Optional<Book> findById(Long id);
     boolean create(Book book);
+    long findBookIdByUniqueAttributes(String title, String author);
     void removeAll();
 }

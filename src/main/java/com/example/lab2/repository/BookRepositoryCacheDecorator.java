@@ -49,6 +49,20 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator{
     }
 
     @Override
+    public long findBookIdByUniqueAttributes(String title, String author) {
+        if(cache.hasResult()) {
+            return cache
+                    .load()
+                    .stream()
+                    .filter(book -> book.getAuthor().equals(author) && book.getTitle().equals(title))
+                    .findFirst()
+                    .map(Book::getId)
+                    .orElse(-1L);
+        }
+        return -1;
+    }
+
+    @Override
     public void removeAll() {
         decoratedRepository.removeAll();
         cache.invalidateCache();
