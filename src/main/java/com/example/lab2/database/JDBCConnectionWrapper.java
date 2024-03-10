@@ -8,6 +8,7 @@ public class JDBCConnectionWrapper extends DbConnection{
 
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306";
+    private static final String DB_URL_TEST = "jdbc:mysql://localhost:3307";
     private static final String USER = "root";
     private static final String PASSWORD = "root";
     private static final int TIMEOUT = 1;
@@ -15,7 +16,11 @@ public class JDBCConnectionWrapper extends DbConnection{
     public JDBCConnectionWrapper(String schema) {
         try {
             Class.forName(JDBC_DRIVER);
-            connection = DriverManager.getConnection(DB_URL + schema, USER, PASSWORD);
+            if(schema.equals("/sd-basics")) {
+                connection = DriverManager.getConnection(DB_URL + schema, USER, PASSWORD);
+            } else {
+                connection = DriverManager.getConnection(DB_URL_TEST + schema, USER, PASSWORD);
+            }
             createTables();
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
@@ -32,7 +37,7 @@ public class JDBCConnectionWrapper extends DbConnection{
                 " publishedDate datetime DEFAULT NULL," +
                 " PRIMARY KEY (id)," +
                 " UNIQUE KEY id_UNIQUE (id)" +
-                ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT= CHARSET=utf8;";
+                ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
         statement.execute(sql);
     }
 

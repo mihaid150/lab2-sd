@@ -1,8 +1,8 @@
 package com.example.lab2.database;
 
 public class DatabaseConnectionFactory {
-    private static final String SCHEMA = "sd-basics";
-    private static final String TEST_SCHEMA = "sd-basics-test";
+    private static final String SCHEMA = "/sd-basics";
+    private static final String TEST_SCHEMA = "/sd-basics-test";
 
     public static DbConnection getConnectionWrapper(SupportedDatabase db, boolean test) {
         final String schema = test ? TEST_SCHEMA : SCHEMA;
