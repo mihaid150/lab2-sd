@@ -1,4 +1,4 @@
-package com.example.lab2.repository;
+package com.example.lab2.repository.Book;
 
 import java.util.ArrayList;
 import java.util.List;

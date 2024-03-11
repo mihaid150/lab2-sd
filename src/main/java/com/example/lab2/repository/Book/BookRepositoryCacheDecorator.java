@@ -1,11 +1,12 @@
-package com.example.lab2.repository;
+package com.example.lab2.repository.Book;
 
-import com.example.lab2.model.Book;
+import com.example.lab2.model.book.Book;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class BookRepositoryCacheDecorator extends BookRepositoryDecorator{
+public class BookRepositoryCacheDecorator extends BookRepositoryDecorator {
 
     private final Cache<Book> cache;
 
@@ -16,7 +17,7 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator{
 
     @Override
     public List<Book> findAll() {
-        if(cache.hasResult()) {
+        if (cache.hasResult()) {
             return cache.load();
         }
         List<Book> allBooks = decoratedRepository.findAll();
@@ -26,10 +27,8 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator{
 
     @Override
     public Optional<Book> findById(Long id) {
-        if(cache.hasResult()) {
-            return cache
-                    .load()
-                    .stream()
+        if (cache.hasResult()) {
+            return cache.load().stream()
                     .filter(book -> book.getId().equals(id))
                     .findFirst();
         }
@@ -42,24 +41,10 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator{
     }
 
     @Override
-    public boolean create(Book book) {
-        boolean result = decoratedRepository.create(book);
+    public Book create(Book book) throws SQLException {
+        Book res = decoratedRepository.create(book);
         cache.add(book);
-        return result;
-    }
-
-    @Override
-    public long findBookIdByUniqueAttributes(String title, String author) {
-        if(cache.hasResult()) {
-            return cache
-                    .load()
-                    .stream()
-                    .filter(book -> book.getAuthor().equals(author) && book.getTitle().equals(title))
-                    .findFirst()
-                    .map(Book::getId)
-                    .orElse(-1L);
-        }
-        return -1;
+        return res;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.lab2.model;
+package com.example.lab2.model.book;
 
 import java.time.LocalDate;
 

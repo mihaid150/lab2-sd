@@ -3,15 +3,15 @@ package com.example.lab2;
 import com.example.lab2.database.DatabaseConnectionFactory;
 import com.example.lab2.database.DbConnection;
 import com.example.lab2.database.SupportedDatabase;
-import com.example.lab2.model.Book;
-import com.example.lab2.model.BookBuilder;
-import com.example.lab2.repository.BookRepository;
-import com.example.lab2.repository.BookRepositoryCacheDecorator;
-import com.example.lab2.repository.BookRepositorySQL;
+import com.example.lab2.model.book.Book;
+import com.example.lab2.model.book.BookBuilder;
+import com.example.lab2.repository.Book.BookRepository;
+import com.example.lab2.repository.Book.BookRepositorySQL;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Optional;
 
 
 @SpringBootApplication
@@ -31,9 +31,6 @@ public class Lab2Application {
                 .setTitle("Java for Dummies")
                 .setPublishedDate(LocalDate.now())
                 .build();
-
-        BookRepositorySQL mysqlRepository = new BookRepositorySQL(connectionWrapper.getConnection());
-        BookRepository bookRepository = new BookRepositoryCacheDecorator(mysqlRepository);
     }
 }
 

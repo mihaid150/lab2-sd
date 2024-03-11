@@ -7,8 +7,8 @@ import java.sql.Statement;
 public class JDBCConnectionWrapper extends DbConnection{
 
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://localhost:3306";
-    private static final String DB_URL_TEST = "jdbc:mysql://localhost:3307";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/";
+    private static final String DB_URL_TEST = "jdbc:mysql://localhost:3307/";
     private static final String USER = "root";
     private static final String PASSWORD = "root";
     private static final int TIMEOUT = 1;
