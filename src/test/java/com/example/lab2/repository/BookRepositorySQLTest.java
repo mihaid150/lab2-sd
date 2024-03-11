@@ -37,13 +37,40 @@ class BookRepositorySQLTest {
     }
 
     @Test
-    void findAll() {
+    void findAllNull() {
         assertEquals(0, repository.findAll().size());
     }
 
     @Test
-    void findById() {
+    void findAll() {
+        Book regularBook = new BookBuilder()
+                .setTitle("title")
+                .setAuthor("author")
+                .setPublishedDate(LocalDate.now())
+                .build();
+        try {
+            repository.create(regularBook);
+            assertEquals(1, repository.findAll().size());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    @Test
+    void findById() {
+        Book regularBook = new BookBuilder()
+                .setTitle("title")
+                .setAuthor("author")
+                .setPublishedDate(LocalDate.now())
+                .build();
+        try {
+            long bookId = repository.create(regularBook).getId();
+            regularBook.setId(bookId);
+            assertTrue(repository.findById(bookId).isPresent());
+            assertEquals(regularBook, repository.findById(bookId).get());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
